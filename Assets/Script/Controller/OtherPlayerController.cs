@@ -9,7 +9,6 @@ public class OtherPlayerController : PlayController
     private float _rotateSpeed = 200.0f;
     private HpController _hpController = null;
     GameObject bow;
-    private TMP_Text _debugText;
     private void LateUpdate()
     {
         if (_hpController != null)
@@ -43,14 +42,6 @@ public class OtherPlayerController : PlayController
                 _usernameText.transform.Rotate(0, 180, 0);
             }
         }
-
-        if (_debugText != null) 
-        {
-            _debugText.text = $"x:{transform.eulerAngles.x},y:{transform.eulerAngles.y},z:{transform.eulerAngles.z}";
-            _debugText.transform.position = new Vector3 (transform.position.x, transform.position.y + 3.0f, transform.position.z);
-            _debugText.transform.LookAt(Camera.main.transform);
-            _debugText.transform.Rotate(0, 180, 0);
-        }
     }
 
     public override void CInit()
@@ -62,8 +53,6 @@ public class OtherPlayerController : PlayController
 
         if (_characterType == Type.CharacterType.Archer)
             bow = FindChildRecursively(transform, "WoodenBow").gameObject;
-
-        _debugText = Managers.Resource.Instantiate("UI/DebugText").transform.GetChild(0).GetComponent<TMP_Text>();
     }
 
     public void Init(Quaternion cameraLocalRotation, GameObject camera)
@@ -244,7 +233,19 @@ public class OtherPlayerController : PlayController
     public override void MouseMove_Update_MOVE()
     {
         Vector3 dirVector3 = _target - transform.position;
-        transform.position += dirVector3.normalized * Time.deltaTime * _speed;
+        Vector3 moveDist = dirVector3.normalized * Time.deltaTime * _speed;
+        Vector3 nextPos = transform.position + moveDist;
+        if ((nextPos - _target).magnitude < 0.1f)
+        {
+            _state = Type.State.IDLE;
+            _dir = Type.Dir.NONE;
+            transform.position = _target;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dirVector3), 0.2f);
+            transform.position += dirVector3.normalized * Time.deltaTime * _speed;
+        }
     }
 
     public override void UpdateSync(Type.MoveType moveType, Type.State state, Type.Dir dir, Type.Dir mouseDir, Vector3 nowPos, Quaternion quaternion, Vector3 target, Vector3 anagle)
@@ -264,24 +265,15 @@ public class OtherPlayerController : PlayController
 
         _dir = dir;
         _target = target;
-
-        if (anagle != Vector3.zero)
-            transform.eulerAngles = anagle;
-
-        GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(new Vector3(nowPos.x, nowPos.y, nowPos.z));
+        GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(new Vector3(nowPos.x, transform.position.y, nowPos.z));
         if (_moveType == Type.MoveType.KeyBoard)
         {
+            if (anagle != Vector3.zero)
+                transform.eulerAngles = anagle;
+
             _cameraLocalRotation = quaternion;
             _camera.transform.localRotation = _cameraLocalRotation;
             // transform.localRotation = localRotation;
-        }
-        
-        if (_moveType == Type.MoveType.Mouse && _state == Type.State.MOVE)
-        {
-            Vector3 dest = new Vector3(_target.x, transform.position.y, _target.z);
-
-            if (dest != Vector3.zero)
-                transform.LookAt(dest);
         }
     }
 
@@ -369,9 +361,6 @@ public class OtherPlayerController : PlayController
 
         if (_talk)
             Managers.Resource.Destory(_talk.gameObject);
-
-        if (_debugText)
-            Managers.Resource.Destory(_debugText.gameObject);
     }
 
     public override void SetHp(float hp)

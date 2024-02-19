@@ -870,9 +870,6 @@ public class PacketHandler
             catch (Exception e) {
                 Debug.LogException(e);
             }
-
-            GameObject hpObject = Managers.Resource.Instantiate("UI/HP");
-
             GameObject cameraPosGo = Managers.Resource.Instantiate("Camera/FakeCameraPos");
             cameraPosGo.GetComponent<FakeCameraPos>().Init(playerGo);;
 
