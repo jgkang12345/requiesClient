@@ -99,8 +99,25 @@ public class PlayerController : PlayController
         }
     }
 
+    IEnumerator heartBeatPing() 
+    {
+        while (true)
+        {
+            byte[] bytes = new byte[8];
+            MemoryStream ms = new MemoryStream(bytes);
+            ms.Position = 0;
+            BinaryWriter bw = new BinaryWriter(ms);
+            bw.Write((Int16)Type.PacketProtocol.S2C_HEARTBIT);
+            bw.Write((Int16)8);
+            bw.Write((Int32)PlayerID); // 4
+            Managers.Data.Network.SendPacket(bytes, 8, Type.ServerPort.NOVICE_PORT);
+            yield return new WaitForSeconds(3.0f);
+        }
+    }
+
     public override void CInit()
     {
+        StartCoroutine(heartBeatPing());
         base.CInit();
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         _agent.updateRotation = false;

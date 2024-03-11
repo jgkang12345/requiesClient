@@ -54,9 +54,11 @@ public class Type
         S2C_SERVERMOVE,
         C2S_SERVER_MOVE,
         C2S_PLAYERSKILLSYNC,
+        S2C_HEARTBIT,
+        C2S_HEARTBIT,
     }
 
-    public static string IP { get { return "127.0.0.1"; } }
+    public static string IP { get { return "58.236.130.58"; } }
     public static int FieldPORT { get { return 30002; } }
     public static int LoginPort { get { return 30003; } }
 

@@ -21,7 +21,7 @@ public class PotalController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(gameObject.name);
+
     }
 
     private void OnTriggerEnter(Collider other)

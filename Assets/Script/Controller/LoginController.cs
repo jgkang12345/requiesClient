@@ -28,7 +28,6 @@ public class LoginController : MonoBehaviour
 
     public void Login()
     {
-        Debug.Log($"UserId:{_userId.text}, UserPw:{_password.text}");
 
         if (_userId.text.Trim() == "" || _password.text.Trim() == "") 
         {

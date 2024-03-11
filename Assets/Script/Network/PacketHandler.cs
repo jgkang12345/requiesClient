@@ -807,7 +807,8 @@ public class PacketHandler
             opc.Destory();
         }
         catch (Exception e) {
-            Debug.LogException(e);
+            Debug.Log($"{playerId}");
+            Debug.LogException(e);  
         }
     }
 
@@ -902,7 +903,6 @@ public class PacketHandler
         try
         {
             Type.State state = (Type.State)br.ReadByte();
-            Debug.Log(state);
             Type.Dir dir = (Type.Dir)br.ReadByte();
             Type.Dir mouseDir = (Type.Dir)br.ReadByte();
             float x = br.ReadSingle();
