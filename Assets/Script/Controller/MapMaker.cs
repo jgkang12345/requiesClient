@@ -99,7 +99,7 @@ public class MapMaker : MonoBehaviour
             }
         }
         FileStream fs;
-        fs = File.Create("C:\\Users\\jgkang\\Desktop\\map\\VillageMap.dat");
+        fs = File.Create("C:\\Users\\jgkang\\Desktop\\map\\IntermediateFieldMap.dat");
         fs.Write(buffer);
         fs.Close();
     }

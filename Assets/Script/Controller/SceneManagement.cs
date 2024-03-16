@@ -38,7 +38,28 @@ public class SceneManagement : MonoBehaviour
             case "VillageScene":
                 VillageInit();
                 break;
+
+            case "IntermediateFieldScene":
+                IntermediateFieldInit();
+                break;
         }
+    }
+
+    private void IntermediateFieldInit()
+    {
+        Managers.Data.Network.ServerConnect(Type.ServerPort.INTERMEDIATE_PORT);
+
+        GameObject playerUi = Managers.Resource.Instantiate("UI/PlayerUI");
+        playerUi.name = "playerUI";
+        byte[] bytes = new byte[1000];
+        MemoryStream ms = new MemoryStream(bytes);
+        ms.Position = 0;
+        BinaryWriter bw = new BinaryWriter(ms);
+        bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERINIT);
+        bw.Write((Int16)12);
+        bw.Write((Int32)Managers.Data.userSQ);
+        bw.Write((Int32)Managers.Data.playerSQ);
+        Managers.Data.Network.SendPacket(bytes, 12, Type.ServerPort.NOVICE_PORT);
     }
 
     private void VillageInit()

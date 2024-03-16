@@ -32,6 +32,29 @@ public class PotalController : MonoBehaviour
             GoNoviceFiled();
         else if (go == Type.ServerPort.VILLAGE_PORT)
             GoVillage();
+        else if (go == Type.ServerPort.INTERMEDIATE_PORT)
+            GoInterMediateFiled();
+    }
+
+    private void GoInterMediateFiled()
+    {
+        Managers.Data.Clear();
+        Managers.Data.Network.ServerDisConnect();
+        int userSQ = Managers.Data.userSQ;
+        int playerSQ = Managers.Data.playerSQ;
+        byte[] bytes = new byte[1000];
+        MemoryStream ms = new MemoryStream(bytes);
+        ms.Position = 0;
+
+        int pktSize = 14;
+
+        BinaryWriter bw = new BinaryWriter(ms);
+        bw.Write((Int16)Type.PacketProtocol.C2S_SERVER_MOVE);
+        bw.Write((Int16)pktSize);
+        bw.Write(userSQ);
+        bw.Write(playerSQ);
+        bw.Write((Int16)Type.ServerPort.INTERMEDIATE_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
     }
 
     public void GoNoviceFiled()

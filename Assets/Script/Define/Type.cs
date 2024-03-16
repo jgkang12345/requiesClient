@@ -67,6 +67,8 @@ public class Type
         NOVICE_PORT = 30002,
         LOGIN_PORT = 30003,
         VILLAGE_PORT = 30004,
+        INTERMEDIATE_PORT = 30005,
+        HIGH_PORT = 30006
     }
     public enum State : byte
     {

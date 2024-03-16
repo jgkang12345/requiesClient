@@ -10,7 +10,6 @@ using UnityEngine;
 public class Network : MonoBehaviour
 {
     private Dictionary<Type.ServerPort, TCPConnector> _connectors = new Dictionary<Type.ServerPort, TCPConnector>();
-    private Dictionary<Type.ServerPort, Thread> _recvThreads = new Dictionary<Type.ServerPort, Thread>();
     private PacketHandler _packetHandler = new PacketHandler();
     private const int _recvBufferSize = 4096 * 10;
     private byte[] _recvBuffer = new byte[_recvBufferSize];
@@ -57,8 +56,10 @@ public class Network : MonoBehaviour
     void Init()
     {
         _connectors.Add(Type.ServerPort.LOGIN_PORT, new TCPConnector());
-        _connectors.Add(Type.ServerPort.NOVICE_PORT, new TCPConnector());
         _connectors.Add(Type.ServerPort.VILLAGE_PORT, new TCPConnector());
+        _connectors.Add(Type.ServerPort.NOVICE_PORT, new TCPConnector());
+        _connectors.Add(Type.ServerPort.INTERMEDIATE_PORT, new TCPConnector());
+        _connectors.Add(Type.ServerPort.HIGH_PORT, new TCPConnector());
         ServerConnect(Type.ServerPort.LOGIN_PORT);
     }
 

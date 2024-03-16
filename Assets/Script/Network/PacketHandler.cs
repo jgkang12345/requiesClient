@@ -169,6 +169,10 @@ public class PacketHandler
         {
             LoadingSceneController.Instance.LoadScene("VillageScene");
         }
+        else if (port == Type.ServerPort.INTERMEDIATE_PORT)
+        {
+            LoadingSceneController.Instance.LoadScene("IntermediateFieldScene");
+        }
     }
 
     private void PacketHandler_S2C_CHARACTERLIST(ArraySegment<byte> dataPtr, int dataSize)
