@@ -121,7 +121,7 @@ public class SelectCharacterController : MonoBehaviour
         bw.Write(playerNameBytes);
         bw.Write(playerType);
         bw.Write((Int32)userSQ);
-        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
     }
 
     GameObject GetIndexToGameObject(int index)
@@ -232,7 +232,7 @@ public class SelectCharacterController : MonoBehaviour
         bw.Write((Int32)playerType);
         bw.Write((Int32)userNameLen);
         bw.Write(userNameBytes);
-        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
         alertText.text = "";
     }
 
@@ -263,6 +263,6 @@ public class SelectCharacterController : MonoBehaviour
         bw.Write((Int32)playerNameLen);
         bw.Write(playerNameBytes);
         bw.Write((Int32)userSQ);
-        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
     }
 }

@@ -99,7 +99,7 @@ public class MapMaker : MonoBehaviour
             }
         }
         FileStream fs;
-        fs = File.Create("C:\\Users\\jgkang\\Desktop\\map\\IntermediateFieldMap.dat");
+        fs = File.Create("C:\\Users\\jgkang\\Desktop\\map\\HighFieldMap.dat");
         fs.Write(buffer);
         fs.Close();
     }

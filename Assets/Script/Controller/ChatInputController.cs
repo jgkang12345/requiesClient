@@ -57,7 +57,7 @@ public class ChatInputController : MonoBehaviour
             bw.Write((Int32)selectedIndex);
             bw.Write((Int32)msgSize);
             bw.Write(chattingBytes);
-            Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.NOVICE_PORT);
+            Managers.Data.Network.SendPacket(bytes, pktSize, 0);
             _text.text = "";
         }
     }

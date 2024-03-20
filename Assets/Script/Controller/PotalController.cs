@@ -34,6 +34,29 @@ public class PotalController : MonoBehaviour
             GoVillage();
         else if (go == Type.ServerPort.INTERMEDIATE_PORT)
             GoInterMediateFiled();
+        else if (go == Type.ServerPort.HIGH_PORT)
+            HighFiled();
+    }
+
+    private void HighFiled() 
+    {
+        Managers.Data.Clear();
+        Managers.Data.Network.ServerDisConnect();
+        int userSQ = Managers.Data.userSQ;
+        int playerSQ = Managers.Data.playerSQ;
+        byte[] bytes = new byte[1000];
+        MemoryStream ms = new MemoryStream(bytes);
+        ms.Position = 0;
+
+        int pktSize = 14;
+
+        BinaryWriter bw = new BinaryWriter(ms);
+        bw.Write((Int16)Type.PacketProtocol.C2S_SERVER_MOVE);
+        bw.Write((Int16)pktSize);
+        bw.Write(userSQ);
+        bw.Write(playerSQ);
+        bw.Write((Int16)Type.ServerPort.HIGH_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
     }
 
     private void GoInterMediateFiled()
@@ -54,7 +77,7 @@ public class PotalController : MonoBehaviour
         bw.Write(userSQ);
         bw.Write(playerSQ);
         bw.Write((Int16)Type.ServerPort.INTERMEDIATE_PORT);
-        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
     }
 
     public void GoNoviceFiled()
@@ -75,7 +98,7 @@ public class PotalController : MonoBehaviour
         bw.Write(userSQ);
         bw.Write(playerSQ);
         bw.Write((Int16)Type.ServerPort.NOVICE_PORT);
-        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
         // Managers.Data.Network.ServerConnect(Type.ServerPort.NOVICE_PORT);
     }
 
@@ -97,6 +120,6 @@ public class PotalController : MonoBehaviour
         bw.Write(userSQ);
         bw.Write(playerSQ);
         bw.Write((Int16)Type.ServerPort.VILLAGE_PORT);
-        Managers.Data.Network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
     }
 }

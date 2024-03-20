@@ -132,7 +132,25 @@ public class PacketHandler
             case Type.PacketProtocol.C2S_PLAYERSKILLSYNC:
                 PacketHandler_C2S_PLAYERSKILLSYNC(dataPtr, dataSize);
                 break;
+
+            case Type.PacketProtocol.S2C_SERVERLIST:
+                PacketHandler_S2C_SERVERLIST(dataPtr, dataSize);
+                break;
         }
+    }
+
+    private void PacketHandler_S2C_SERVERLIST(ArraySegment<byte> dataPtr, int dataSize)
+    {
+        MemoryStream ms = new MemoryStream(dataPtr.Array, dataPtr.Offset, dataPtr.Count);
+        BinaryReader br = new BinaryReader(ms);
+        int villageChannelMax = br.ReadInt32();
+        int noviceChannelMax = br.ReadInt32();
+        int intermediateChannelMax = br.ReadInt32();
+        int highChannelMax = br.ReadInt32();
+        Managers.Data.channelMaxList.Add(villageChannelMax);
+        Managers.Data.channelMaxList.Add(noviceChannelMax);
+        Managers.Data.channelMaxList.Add(intermediateChannelMax);
+        Managers.Data.channelMaxList.Add(highChannelMax);
     }
 
     private void PacketHandler_C2S_PLAYERSKILLSYNC(ArraySegment<byte> dataPtr, int dataSize)
@@ -155,23 +173,31 @@ public class PacketHandler
     {
         MemoryStream ms = new MemoryStream(dataPtr.Array, dataPtr.Offset, dataPtr.Count);
         BinaryReader br = new BinaryReader(ms);
-        Type.ServerPort port = (Type.ServerPort)br.ReadInt16();
+        int port = br.ReadInt16();
         int playerSQ = br.ReadInt32();
+        Type.ServerType serverType = (Type.ServerType)br.ReadInt32();
+        int ch = br.ReadInt32();
 
+        Managers.Data.channel = ch;
+        Managers.Data.serverType = serverType;
         Managers.Data.playerSQ = playerSQ;
+        Managers.Data.port = port;
 
-        if (port == Type.ServerPort.NOVICE_PORT)
+        if (serverType == Type.ServerType.NOVICE)
         {
             LoadingSceneController.Instance.LoadScene("NoviceFieldScene");
-
         }
-        else if (port == Type.ServerPort.VILLAGE_PORT)
+        else if (serverType == Type.ServerType.VILLAGE)
         {
             LoadingSceneController.Instance.LoadScene("VillageScene");
         }
-        else if (port == Type.ServerPort.INTERMEDIATE_PORT)
+        else if (serverType == Type.ServerType.INTERMEDIATE)
         {
             LoadingSceneController.Instance.LoadScene("IntermediateFieldScene");
+        }
+        else if (serverType == Type.ServerType.HIGH) 
+        {
+            LoadingSceneController.Instance.LoadScene("HighScene");
         }
     }
 
@@ -218,6 +244,17 @@ public class PacketHandler
             {
                 Managers.Data.userSQ = userSQ;
                 LoadingSceneController.Instance.LoadScene("SelectCharacterScene");
+                Managers.Data.Network.ServerConnect(29999);
+
+                byte[] bytes2 = new byte[24];
+                MemoryStream ms2 = new MemoryStream(bytes2);
+                ms.Position = 0;
+
+                BinaryWriter bw = new BinaryWriter(ms2);
+                bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERINIT);
+                bw.Write((Int16)8);
+                bw.Write((Int32)userSQ);
+                Managers.Data.Network.SendPacket(bytes2, 8, 29999);
                 // Managers.Data.Network.ServerConnect((Type.ServerPort)serverPort);
                 // UnityEngine.SceneManagement.SceneManager.LoadScene("MapScene");
             }

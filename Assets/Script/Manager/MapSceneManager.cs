@@ -21,7 +21,7 @@ public class MapSceneManager : MonoBehaviour
         bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERINIT);
         bw.Write((Int16)8);
         bw.Write((Int32)SQ);
-        Managers.Data.Network.SendPacket(bytes, 8, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 8, 0);
     }
 
     void Start()

@@ -42,12 +42,34 @@ public class SceneManagement : MonoBehaviour
             case "IntermediateFieldScene":
                 IntermediateFieldInit();
                 break;
+
+            case "HighScene":
+                HighSceneInit();
+                break;
         }
+    }
+
+    private void HighSceneInit() 
+    {
+        Managers.Data.Network.ServerConnect(Managers.Data.port);
+
+        GameObject playerUi = Managers.Resource.Instantiate("UI/PlayerUI");
+        playerUi.name = "playerUI";
+        byte[] bytes = new byte[1000];
+        MemoryStream ms = new MemoryStream(bytes);
+        ms.Position = 0;
+        BinaryWriter bw = new BinaryWriter(ms);
+        bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERINIT);
+        bw.Write((Int16)12);
+        bw.Write((Int32)Managers.Data.userSQ);
+        bw.Write((Int32)Managers.Data.playerSQ);
+        Managers.Data.Network.SendPacket(bytes, 12, 0);
+
     }
 
     private void IntermediateFieldInit()
     {
-        Managers.Data.Network.ServerConnect(Type.ServerPort.INTERMEDIATE_PORT);
+        Managers.Data.Network.ServerConnect(Managers.Data.port);
 
         GameObject playerUi = Managers.Resource.Instantiate("UI/PlayerUI");
         playerUi.name = "playerUI";
@@ -59,12 +81,12 @@ public class SceneManagement : MonoBehaviour
         bw.Write((Int16)12);
         bw.Write((Int32)Managers.Data.userSQ);
         bw.Write((Int32)Managers.Data.playerSQ);
-        Managers.Data.Network.SendPacket(bytes, 12, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 12, 0);
     }
 
     private void VillageInit()
     {
-        Managers.Data.Network.ServerConnect(Type.ServerPort.VILLAGE_PORT);
+        Managers.Data.Network.ServerConnect(Managers.Data.port);
 
         GameObject playerUi = Managers.Resource.Instantiate("UI/PlayerUI");
         playerUi.name = "playerUI";
@@ -76,12 +98,12 @@ public class SceneManagement : MonoBehaviour
         bw.Write((Int16)12);
         bw.Write((Int32)Managers.Data.userSQ);
         bw.Write((Int32)Managers.Data.playerSQ);
-        Managers.Data.Network.SendPacket(bytes, 12, Type.ServerPort.VILLAGE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 12, 0);
     }
 
     private void NoviceFieldInit()
     {
-        Managers.Data.Network.ServerConnect(Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.ServerConnect(Managers.Data.port);
 
         GameObject playerUi = Managers.Resource.Instantiate("UI/PlayerUI");
         playerUi.name = "playerUI";
@@ -93,7 +115,7 @@ public class SceneManagement : MonoBehaviour
         bw.Write((Int16)12);
         bw.Write((Int32)Managers.Data.userSQ);
         bw.Write((Int32)Managers.Data.playerSQ);
-        Managers.Data.Network.SendPacket(bytes, 12, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 12, 0);
     }
 
     private void SelectCharacterInit()
@@ -106,7 +128,7 @@ public class SceneManagement : MonoBehaviour
         bw.Write((Int16)Type.PacketProtocol.C2S_CHARACTERLIST);
         bw.Write((Int16)8);
         bw.Write((Int32)Managers.Data.userSQ);
-        Managers.Data.Network.SendPacket(bytes, 8, Type.ServerPort.LOGIN_PORT);
+        Managers.Data.Network.SendPacket(bytes, 8, 29999);
     }
 
     private void LoginInit()

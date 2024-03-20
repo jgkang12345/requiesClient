@@ -110,7 +110,7 @@ public class PlayerController : PlayController
             bw.Write((Int16)Type.PacketProtocol.S2C_HEARTBIT);
             bw.Write((Int16)8);
             bw.Write((Int32)PlayerID); // 4
-            Managers.Data.Network.SendPacket(bytes, 8, Type.ServerPort.NOVICE_PORT);
+            Managers.Data.Network.SendPacket(bytes, 8, 0);
             yield return new WaitForSeconds(3.0f);
         }
     }
@@ -324,7 +324,7 @@ public class PlayerController : PlayController
         BinaryWriter bw = new BinaryWriter(ms);
         bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERSTATINFO);
         bw.Write((Int16)4);
-        Managers.Data.Network.SendPacket(bytes, 4, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 4, 0);
     }
 
     public override void SetExp(int level, float exp, float expMax)
@@ -531,7 +531,7 @@ public class PlayerController : PlayController
 
         bw.Write((byte)_moveType); // 44 
 
-        Managers.Data.Network.SendPacket(bytes, 64, Type.ServerPort.NOVICE_PORT);   
+        Managers.Data.Network.SendPacket(bytes, 64, 0);   
         _movePacketCnt++;
     }
 
@@ -568,7 +568,7 @@ public class PlayerController : PlayController
 
         bw.Write((byte)_moveType); // 4
 
-        Managers.Data.Network.SendPacket(bytes, 64, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 64, 0);
     }
     public override void MouseMove_Update_Input()
     {
@@ -692,7 +692,7 @@ public class PlayerController : PlayController
                         bw.Write((Int16)12);
                         bw.Write((Int32)otherPlayerId);
                         bw.Write((Int32)_damage);
-                        Managers.Data.Network.SendPacket(bytes, 12, Type.ServerPort.NOVICE_PORT);
+                        Managers.Data.Network.SendPacket(bytes, 12, 0);
                     }
                 }
                 else if (targetLayer == 15)
@@ -718,7 +718,7 @@ public class PlayerController : PlayController
                         bw.Write((float)y);
                         bw.Write((float)z);
                         bw.Write((Int32)_damage);
-                        Managers.Data.Network.SendPacket(bytes, 24, Type.ServerPort.NOVICE_PORT);
+                        Managers.Data.Network.SendPacket(bytes, 24, 0);
                     }
                 }
             }
@@ -764,7 +764,7 @@ public class PlayerController : PlayController
         BinaryWriter bw = new BinaryWriter(ms);
         bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERESPAWN);
         bw.Write((Int16)4);
-        Managers.Data.Network.SendPacket(bytes, 4, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 4, 0);
     }
 
     private void SyncQSkill() 
@@ -776,7 +776,7 @@ public class PlayerController : PlayController
         bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERSKILLSYNC);
         bw.Write((Int16)8);
         bw.Write((Int32)Managers.Data.PlayerController.PlayerID);
-        Managers.Data.Network.SendPacket(bytes, 8, Type.ServerPort.NOVICE_PORT);
+        Managers.Data.Network.SendPacket(bytes, 8, 0);
     }
 
     private void QSkill() 
@@ -861,7 +861,7 @@ public class PlayerController : PlayController
                     bw.Write((float)y);
                     bw.Write((float)z);
                     bw.Write((Int32)_damage);
-                    Managers.Data.Network.SendPacket(bytes, 24, Type.ServerPort.NOVICE_PORT);
+                    Managers.Data.Network.SendPacket(bytes, 24, 0);
                 }
             }
         }
@@ -951,7 +951,7 @@ public class PlayerController : PlayController
                     bw.Write((float)y);
                     bw.Write((float)z);
                     bw.Write((Int32)_damage);
-                    Managers.Data.Network.SendPacket(bytes, 24, Type.ServerPort.NOVICE_PORT);
+                    Managers.Data.Network.SendPacket(bytes, 24, 0);
                 }
             }
         }

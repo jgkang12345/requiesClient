@@ -9,12 +9,12 @@ using UnityEngine;
 
 public class Network : MonoBehaviour
 {
-    private Dictionary<Type.ServerPort, TCPConnector> _connectors = new Dictionary<Type.ServerPort, TCPConnector>();
+    private Dictionary<int, TCPConnector> _connectors = new Dictionary<int, TCPConnector>();
     private PacketHandler _packetHandler = new PacketHandler();
     private const int _recvBufferSize = 4096 * 10;
     private byte[] _recvBuffer = new byte[_recvBufferSize];
-    public Type.ServerPort NowPort;
-    private static Dictionary<Type.ServerPort, bool> _threadFlags = new Dictionary<Type.ServerPort, bool>();
+    public int NowPort;
+    private static Dictionary<int, bool> _threadFlags = new Dictionary<int, bool>();
 
     public string LocalIp
     {
@@ -37,8 +37,11 @@ public class Network : MonoBehaviour
         Init();
     }
 
-    public void ServerConnect(Type.ServerPort port)
+    public void ServerConnect(int port)
     {
+        if (!_connectors.ContainsKey(port))
+            _connectors.Add(port, new TCPConnector());
+
         if (_connectors[port].ConnectTo(Type.IP, (int)port))    
         {
             NowPort = port;
@@ -55,19 +58,14 @@ public class Network : MonoBehaviour
 
     void Init()
     {
-        _connectors.Add(Type.ServerPort.LOGIN_PORT, new TCPConnector());
-        _connectors.Add(Type.ServerPort.VILLAGE_PORT, new TCPConnector());
-        _connectors.Add(Type.ServerPort.NOVICE_PORT, new TCPConnector());
-        _connectors.Add(Type.ServerPort.INTERMEDIATE_PORT, new TCPConnector());
-        _connectors.Add(Type.ServerPort.HIGH_PORT, new TCPConnector());
-        ServerConnect(Type.ServerPort.LOGIN_PORT);
+        ServerConnect(30003);
     }
 
-    public void SendPacket(byte[] buffer, int sendSize, Type.ServerPort port)
+    public void SendPacket(byte[] buffer, int sendSize, int port)
     {
         try
         {
-            if (port != Type.ServerPort.LOGIN_PORT)
+            if (port != 30003 && port != 29999)
                 port = NowPort;
             
             if (_connectors[port].ConnectSocket.Connected)
@@ -95,7 +93,7 @@ public class Network : MonoBehaviour
         }
     }
     
-    private void TCPRecvProc(Type.ServerPort port)
+    private void TCPRecvProc(int port)
     {
         _threadFlags[port] = true;
 

@@ -47,7 +47,7 @@ public class BoomController : MonoBehaviour
                         bw.Write((float)y);
                         bw.Write((float)z);
                         bw.Write((Int32)_damage);
-                        Managers.Data.Network.SendPacket(bytes, 24, Type.ServerPort.NOVICE_PORT);
+                        Managers.Data.Network.SendPacket(bytes, 24, 0);
                     }
                 }
             }

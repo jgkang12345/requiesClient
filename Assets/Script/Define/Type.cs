@@ -56,6 +56,7 @@ public class Type
         C2S_PLAYERSKILLSYNC,
         S2C_HEARTBIT,
         C2S_HEARTBIT,
+        S2C_SERVERLIST,
     }
 
     public static string IP { get { return "58.236.130.58"; } }
@@ -64,6 +65,7 @@ public class Type
 
     public enum ServerPort : UInt16 
     {
+        WORLD_PORT = 29999,
         NOVICE_PORT = 30002,
         LOGIN_PORT = 30003,
         VILLAGE_PORT = 30004,
@@ -117,8 +119,10 @@ public class Type
 
     public enum ServerType : Int32 
     {
-        Login,
-        Field
+        VILLAGE,
+        NOVICE,
+        INTERMEDIATE,
+        HIGH
     }
 
     public enum CharacterType : byte

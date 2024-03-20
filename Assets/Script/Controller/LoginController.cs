@@ -56,7 +56,7 @@ public class LoginController : MonoBehaviour
         bw.Write((Int32)userPwLen);
         bw.Write(userPwBytes);
 
-        _network.SendPacket(bytes, pktSize, Type.ServerPort.LOGIN_PORT);
+        _network.SendPacket(bytes, pktSize, 30003);
         
         _userId.text = "";
         _password.text = "";
