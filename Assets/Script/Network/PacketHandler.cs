@@ -1043,6 +1043,15 @@ public class PacketHandler
         mapCameraController.playerGo = playerGo;
         GameObject playerMarker = Managers.Resource.Instantiate("Object/PlayerMarker", playerGo.transform);
         playerMarker.transform.position = new Vector3(playerGo.transform.position.x, 5, playerGo.transform.position.z);
+
+        if (Managers.Data.BackupData != null) 
+        {
+            pc.SetHp(Managers.Data.BackupData.hp);
+            pc.SetMp(Managers.Data.BackupData.mp);
+            pc.SetHpMax(Managers.Data.BackupData.hpMax);
+            pc.SetMpMax(Managers.Data.BackupData.mpMax);
+            pc.SetExp(Managers.Data.BackupData.exp);
+        }
     }
     private void PacketHandler_S2C_CREATECHARACTER(ArraySegment<byte> dataPtr, int dataSize)
     {

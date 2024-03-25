@@ -12,11 +12,15 @@ public class DataManager
     public int playerSQ { get; set; }
     public int port { get; set; }
     public Type.ServerType serverType { get; set; }
+    public Type.ServerType prevServerType { get; set; } = Type.ServerType.NOVICE;
     public int channel { get; set; }
     public PlayerController PlayerController { get { return _playerController; } set { _playerController = value; } }
     public Dictionary<int, PlayController> PlayerDic { get { return _playDic; } }
     public Dictionary<int, GameObject> MonsterDic { get { return _monsterDic; } }
     public List<int> channelMaxList = new List<int>();
+
+    public Type.PlayerInfoBackUp BackupData { get; set; } = null;
+    public Vector3 channelMoveMyPos { get; set; } = new Vector3(-1, -1, -1);
     public void Clear() 
     {
         Managers.Resource.Destory(PlayerController.gameObject);

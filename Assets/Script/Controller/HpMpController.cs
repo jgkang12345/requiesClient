@@ -52,6 +52,21 @@ public class HpMpController : MonoBehaviour
         return _hp;
     }
 
+    public float GetMp() 
+    {
+        return _mp;
+    }
+
+    public float GetHpMax() 
+    {
+        return _hpMax;
+    }
+
+    public float GetMpMax() 
+    {
+        return _mpMax;
+    }
+
     private void HpMpUpdate() 
     {
         _hpImg.fillAmount = _hp / _hpMax;

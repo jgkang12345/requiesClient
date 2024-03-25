@@ -139,5 +139,17 @@ public class Type
         public int index;
         public int level;
     }
+
+    public class PlayerInfoBackUp 
+    {
+        public float hp = 0;
+        public float hpMax = 0;
+        public float mp = 0;
+        public float mpMax = 0;
+        public int exp = 0;
+        public float x = 0;
+        public float y = 0;
+        public float z = 0;
+    }
 }
 

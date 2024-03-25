@@ -26,10 +26,16 @@ public class PlayerController : PlayController
     TMP_Text _levelUi = null;
     StatInfoController _statInfoController = null;
     TMP_InputField _chatInput;
-    float _exp;
+    int _exp;
     GameObject bow;
     private bool skill1CoolTime = false;
     private bool skill2CoolTime = false;
+
+    public int GetExp() { return _exp; }
+    public float GetHp() { return _hpMpController.GetHP(); }
+    public float GetMp() { return _hpMpController.GetMp(); }
+    public float GetHpMax() { return _hpMpController.GetHpMax(); }
+    public float GetMpMax() { return _hpMpController.GetMpMax(); }
     private void LateUpdate()
     {
         if (_talk != null)

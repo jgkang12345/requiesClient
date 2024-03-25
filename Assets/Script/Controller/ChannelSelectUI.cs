@@ -50,6 +50,14 @@ public class ChannelSelectUI : MonoBehaviour
 
     void setDropDown(int option)
     {
+        Managers.Data.BackupData = new Type.PlayerInfoBackUp();
+        Managers.Data.BackupData.exp = Managers.Data.PlayerController.GetExp();
+        Managers.Data.BackupData.hp = Managers.Data.PlayerController.GetHp();
+        Managers.Data.BackupData.mp = Managers.Data.PlayerController.GetMp();
+        Managers.Data.BackupData.hpMax = Managers.Data.PlayerController.GetHpMax();
+        Managers.Data.BackupData.mpMax = Managers.Data.PlayerController.GetMpMax();
+        Managers.Data.channelMoveMyPos = Managers.Data.PlayerController.transform.position;
+
         // option 관련 동작
         Debug.Log("current option : " + option);
         Managers.Data.Clear();
