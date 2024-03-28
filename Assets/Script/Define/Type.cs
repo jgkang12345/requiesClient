@@ -57,6 +57,10 @@ public class Type
         S2C_HEARTBIT,
         C2S_HEARTBIT,
         S2C_SERVERLIST,
+        C2S_LATECY,
+        S2C_MONITORINIT,
+        S2C_LATECY,
+        S2C_CONNECTIONLIST,
     }
 
     public static string IP { get { return "58.236.130.58"; } }
