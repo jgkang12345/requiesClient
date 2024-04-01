@@ -136,7 +136,26 @@ public class PacketHandler
             case Type.PacketProtocol.S2C_SERVERLIST:
                 PacketHandler_S2C_SERVERLIST(dataPtr, dataSize);
                 break;
+
+            case Type.PacketProtocol.S2C_PLAYERWHISPER:
+                PacketHandler_S2C_PLAYERWHISPER(dataPtr, dataSize);
+                break;
+
         }
+    }
+
+    private void PacketHandler_S2C_PLAYERWHISPER(ArraySegment<byte> dataPtr, int dataSize)
+    {
+        MemoryStream ms = new MemoryStream(dataPtr.Array, dataPtr.Offset, dataPtr.Count);
+        BinaryReader br = new BinaryReader(ms);
+
+        int msgSize = br.ReadInt32();
+        byte[] msgBytes = br.ReadBytes(msgSize);
+        string msg = Encoding.Unicode.GetString(msgBytes);
+        int userNameIndex = msg.IndexOf(":");
+        GameObject chatInput = GameObject.FindGameObjectWithTag("ChatContent");
+        chatInput.GetComponent<ChatViewController>().Push(msg, 2);
+
     }
 
     private void PacketHandler_S2C_SERVERLIST(ArraySegment<byte> dataPtr, int dataSize)

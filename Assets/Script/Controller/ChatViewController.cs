@@ -36,10 +36,13 @@ public class ChatViewController : MonoBehaviour
                 switch (msg.chatType)
                 {
                     case 0:
-                        textGo.GetComponent<TMP_Text>().color = Color.green;
+                        textGo.GetComponent<TMP_Text>().color = Color.white;
                         break;
                     case 1:
                         textGo.GetComponent<TMP_Text>().color = Color.red;
+                        break;
+                    case 2:
+                        textGo.GetComponent<TMP_Text>().color = Color.green;
                         break;
                 }
             }
@@ -53,7 +56,19 @@ public class ChatViewController : MonoBehaviour
 
                 GameObject textGo = Managers.Resource.Instantiate("UI/Chatting", transform);
                 textGo.GetComponent<TMP_Text>().text = msg.msg;
-                textGo.GetComponent<TMP_Text>().color = Color.green;
+
+                switch (msg.chatType)
+                {
+                    case 0:
+                        textGo.GetComponent<TMP_Text>().color = Color.white;
+                        break;
+                    case 1:
+                        textGo.GetComponent<TMP_Text>().color = Color.red;
+                        break;
+                    case 2:
+                        textGo.GetComponent<TMP_Text>().color = Color.green;
+                        break;
+                }
             }
         }
     }

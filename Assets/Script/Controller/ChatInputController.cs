@@ -39,26 +39,65 @@ public class ChatInputController : MonoBehaviour
 
             if (chatting.Trim().Length == 0)
                 return;
-
             string username = Managers.Data.PlayerController.GetUserName();
-            chatting = $"{username}:{chatting}";
+            // TODO ±”º”∏ª
+            if (chatting.StartsWith("/w"))
+            {
+                // /w dummyClient1 æ»≥Á«œººø‰
+                string[] wisperSpllit = chatting.Split(" ");
+                if (wisperSpllit.Length != 3)
+                {
+                    _text.text = "";
+                    return;
+                }
 
-            byte[] bytes = new byte[1000];
-            MemoryStream ms = new MemoryStream(bytes);
-            ms.Position = 0;
+                string chattingMsg = wisperSpllit[2];
+                string recvName = wisperSpllit[1];
 
-            byte[] chattingBytes = Encoding.Unicode.GetBytes(chatting.Trim());
-            int msgSize = chattingBytes.Length;
-            int pktSize = msgSize + 8 + 4;
+                chatting = $"{username}¥‘¿« ±”º”∏ª:{chattingMsg}";
+                string myChatting = $"{recvName}¥‘ø°∞‘ ±”º”∏ª:{chattingMsg}";
+                byte[] bytes = new byte[1000];
+                MemoryStream ms = new MemoryStream(bytes);
+                ms.Position = 0;
+                byte[] recvNameBytes = Encoding.Unicode.GetBytes(recvName);
+                int recvNameLength = recvNameBytes.Length;      
 
-            BinaryWriter bw = new BinaryWriter(ms);
-            bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERCHAT);
-            bw.Write((Int16)pktSize);
-            bw.Write((Int32)selectedIndex);
-            bw.Write((Int32)msgSize);
-            bw.Write(chattingBytes);
-            Managers.Data.Network.SendPacket(bytes, pktSize, 0);
-            _text.text = "";
+                byte[] chattingBytes = Encoding.Unicode.GetBytes(chatting.Trim());
+                int msgSize = chattingBytes.Length;
+                int pktSize = recvNameLength + msgSize + 4 + 4 + 4;
+
+                BinaryWriter bw = new BinaryWriter(ms);
+                bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERWHISPER);
+                bw.Write((Int16)pktSize);
+                bw.Write((Int32)msgSize);
+                bw.Write(chattingBytes);
+                bw.Write((Int32)recvNameLength);
+                bw.Write(recvNameBytes);
+                Managers.Data.Network.SendPacket(bytes, pktSize, 29999);
+                _chatContent.GetComponent<ChatViewController>().Push(myChatting, 2);
+                _text.text = "";
+            }
+            else
+            {
+                chatting = $"{username}:{chatting}";
+
+                byte[] bytes = new byte[1000];
+                MemoryStream ms = new MemoryStream(bytes);
+                ms.Position = 0;
+
+                byte[] chattingBytes = Encoding.Unicode.GetBytes(chatting.Trim());
+                int msgSize = chattingBytes.Length;
+                int pktSize = msgSize + 8 + 4;
+
+                BinaryWriter bw = new BinaryWriter(ms);
+                bw.Write((Int16)Type.PacketProtocol.C2S_PLAYERCHAT);
+                bw.Write((Int16)pktSize);
+                bw.Write((Int32)selectedIndex);
+                bw.Write((Int32)msgSize);
+                bw.Write(chattingBytes);
+                Managers.Data.Network.SendPacket(bytes, pktSize, 0);
+                _text.text = "";
+            }        
         }
     }
 }
