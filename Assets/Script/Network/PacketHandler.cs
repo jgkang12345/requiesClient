@@ -310,14 +310,12 @@ public class PacketHandler
 
         if (playerId == Managers.Data.PlayerController.PlayerID)
         {
-            Managers.Data.PlayerController.SetExp(level, exp, expMax);
-            Managers.Data.PlayerController.SetHp(hp);
-            Managers.Data.PlayerController.SetHpMax(hp);
+            Managers.Data.PlayerController.SetExp(level, exp, expMax,(int)hp);
         }
         else
         {
             Managers.Data.PlayerDic.TryGetValue(playerId, out var otherPlayer);
-            otherPlayer.SetExp(level, exp, expMax);
+            otherPlayer.SetExp(level, exp, expMax, (int)hp);
             otherPlayer.SetHp(hp);
             otherPlayer.SetHpMax(hp);
         }

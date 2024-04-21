@@ -123,6 +123,28 @@ public class PlayerController : PlayController
 
     public override void CInit()
     {
+        _hpMax[1, 1] = 2000;
+        _hpMax[1, 2] = 2100;
+        _hpMax[1, 3] = 2200;
+        _hpMax[1, 4] = 2300;
+        _hpMax[1, 5] = 2400;
+        _hpMax[1, 6] = 2500;
+        _hpMax[1, 7] = 2600;
+        _hpMax[1, 8] = 2700;
+        _hpMax[1, 9] = 2800;
+        _hpMax[1, 10] = 2900;
+
+        _hpMax[2, 1] = 1000;
+        _hpMax[2, 2] = 1100;
+        _hpMax[2, 3] = 1200;
+        _hpMax[2, 4] = 1300;
+        _hpMax[2, 5] = 1400;
+        _hpMax[2, 6] = 1500;
+        _hpMax[2, 7] = 1600;
+        _hpMax[2, 8] = 1700;
+        _hpMax[2, 9] = 1800;
+        _hpMax[2, 10] = 1900;
+
         StartCoroutine(heartBeatPing());
         base.CInit();
         _agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -139,6 +161,8 @@ public class PlayerController : PlayController
         _statInfoController.Init();
         _chatInput = GameObject.FindWithTag("ChatInput").GetComponent<TMP_InputField>();
         SetExp(_level, _exp, 1000);
+        SetHpMax(_hpMax[(int)_characterType, _level]);
+
 
         if (_characterType == Type.CharacterType.Archer)
             bow = FindChildRecursively(transform, "WoodenBow").gameObject;
@@ -333,7 +357,7 @@ public class PlayerController : PlayController
         Managers.Data.Network.SendPacket(bytes, 4, 0);
     }
 
-    public override void SetExp(int level, float exp, float expMax)
+    public override void SetExp(int level, float exp, float expMax, int hp)
     {
         if (_level != level) 
         {
@@ -343,8 +367,16 @@ public class PlayerController : PlayController
             BufferEffectController bf = bufferEffect.AddComponent<BufferEffectController>();
             bf.Player = gameObject;
         }
+        Managers.Data.PlayerController.SetHpMax(_hpMax[(int)_characterType, _level]);
+        Managers.Data.PlayerController.SetHp(hp);
         _levelUi.text = $"Lv.{_level}";
        _expController.SetExp(level, exp, expMax);
+    }
+
+    public void SetExp(int level, float exp, float expMax)
+    {
+        _levelUi.text = $"Lv.{_level}";
+        _expController.SetExp(level, exp, expMax);
     }
 
     internal void MonsterInfoIsUnActive(int monsterId)

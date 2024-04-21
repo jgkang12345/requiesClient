@@ -391,7 +391,7 @@ public class OtherPlayerController : PlayController
         StartCoroutine(CoDeath());
     }
 
-    public override void SetExp(int level, float exp, float expMax)
+    public override void SetExp(int level, float exp, float expMax, int hp)
     {
         if (_level != level)
         {

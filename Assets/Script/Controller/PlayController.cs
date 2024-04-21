@@ -25,6 +25,7 @@ public class PlayController : CreatureController
     protected string _userName = "";
     protected TMP_Text _usernameText = null;
     protected Type.CharacterType _characterType;
+    protected int[,] _hpMax = new int[3,11];
 
     private void OnDestroy()
     {
@@ -167,7 +168,7 @@ public class PlayController : CreatureController
         _level = level;
     }
 
-    public virtual void SetExp(int level, float exp, float expMax)
+    public virtual void SetExp(int level, float exp, float expMax, int hp)
     {
 
     }
